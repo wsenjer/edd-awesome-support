@@ -75,8 +75,8 @@ class EDD_Awesome_Support{
 	    $order_number = get_post_meta($post->ID, '_wpas_order_number', true);
 		if($order_number != ""){
 			$purchase_data = edd_get_payment_meta( $order_number );
-			$licence_id  = edd_software_licensing()->get_license_by_key($purchase_data['key']);
-			$status = edd_software_licensing()->get_license_status( $licence_id );
+			$licence_id  = EDD_Software_Licensing::instance()->get_license_by_key($purchase_data['key']);
+			$status = EDD_Software_Licensing::instance()->get_license_status( $licence_id );
 			$payment_id   = absint( $order_number );
 			$payment      = new EDD_Payment( $payment_id );		
 			$number         = $payment->number;
@@ -86,7 +86,7 @@ class EDD_Awesome_Support{
 			$user_info      = edd_get_payment_meta_user_info( $payment_id );
 			$customer       = new EDD_Customer( $payment->customer_id );
 
-			$licenses = edd_software_licensing()->get_licenses_of_purchase( $payment_id );
+			$licenses = EDD_Software_Licensing::instance()->get_licenses_of_purchase( $payment_id );
 
 	?>
 			<table class="widefat posts">
@@ -123,7 +123,7 @@ class EDD_Awesome_Support{
 						$i = 0;
 						foreach ( $licenses as $key => $license ) :
 							$key            = get_post_meta( $license->ID, '_edd_sl_key', true );
-							$status         = edd_software_licensing()->get_license_status(  $license->ID );
+							$status         = EDD_Software_Licensing::instance()->get_license_status(  $license->ID );
 							$status_display = '<span class="edd-sl-' . esc_attr( $status ) . '">' . esc_html( $status ) . '</span>';
 							?>
 							<tr class="<?php if ( $i % 2 == 0 ) { echo 'alternate'; } ?>">
@@ -153,7 +153,7 @@ class EDD_Awesome_Support{
 
 						foreach ( $licenses as $key => $license ) :
 
-							$sites = edd_software_licensing()->get_sites( $license->ID );
+							$sites = EDD_Software_Licensing::instance()->get_sites( $license->ID );
 							if( ! empty( $sites ) ) :
 								$i = 0;
 								foreach( $sites as $site ) : ?>
